@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.Callbacks;
 
 namespace KevinCastejon.EditorToolbox
 {
@@ -9,36 +11,15 @@ namespace KevinCastejon.EditorToolbox
     [CreateAssetMenu(menuName = "Animation Spritesheet Configuration", order = 400)]
     public class SpriteSheetConfiguration : ScriptableObject
     {
-        public List<AnimationInfo> animations = new List<AnimationInfo>();
+        [SerializeField] private List<AnimationInfo> _animations = new List<AnimationInfo>();
+        public List<AnimationInfo> Animations { get => _animations; }
 
-        public void EnsureUniqueNames()
+        [OnOpenAsset]
+        private static bool OpenSpriteSheet(int instanceID, int line)
         {
-            Dictionary<string, int> names = new Dictionary<string, int>();
-            for (int i = 0; i < animations.Count; i++)
-            {
-                if (names.ContainsKey(animations[i].name))
-                {
-                    names[animations[i].name]++;
-                    animations[i].name = animations[i].name + "_";
-                }
-                else
-                {
-                    names.Add(animations[i].name, 0);
-                }
-            }
-        }
-
-        public void EnsureNotEmpty()
-        {
-            if (animations.Count == 0)
-            {
-                Reset();
-            }
-        }
-
-        private void Reset()
-        {
-            animations = new List<AnimationInfo>() { new AnimationInfo() };
+            AnimationGenerator window = EditorWindow.GetWindow(typeof(AnimationGenerator)) as AnimationGenerator;
+            window.Config = (SpriteSheetConfiguration)EditorUtility.InstanceIDToObject(instanceID);
+            return true;
         }
     }
 }

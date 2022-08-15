@@ -690,15 +690,15 @@ TextureImporter:
         y: 0
         width: 24
         height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.15}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5fa7761d3b73ff10800000000000000
-      internalID: 2302319336816619355
+      spriteID: 9416a29f22b57224ca0522b851ab952e
+      internalID: 993884657
       vertices: []
       indices: 
       edges: []
@@ -734,7 +734,7 @@ TextureImporter:
       DinoSprites - vita_20: 152425473834859703
       DinoSprites - vita_5: -6883348392513659430
       DinoSprites - vita_11: -3991524738530495621
-      DinoSprites - vita_23: 2302319336816619355
+      DinoSprites - vita_23: 993884657
       DinoSprites - vita_18: -5471960104826093940
       DinoSprites - vita_14: -1082696785551458015
       DinoSprites - vita_17: -7237253568549266009

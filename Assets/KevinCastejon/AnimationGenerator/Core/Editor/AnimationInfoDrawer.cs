@@ -14,29 +14,28 @@ namespace KevinCastejon.EditorToolbox
         }
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
-            SerializedProperty name = property.FindPropertyRelative("name");
-            SerializedProperty length = property.FindPropertyRelative("length");
-            SerializedProperty loop = property.FindPropertyRelative("loop");
-            SerializedProperty autoFramerate = property.FindPropertyRelative("autoFramerate");
-            SerializedProperty framerate = property.FindPropertyRelative("framerate");
+            SerializedProperty name = property.FindPropertyRelative("_name");
+            SerializedProperty length = property.FindPropertyRelative("_length");
+            SerializedProperty loop = property.FindPropertyRelative("_loop");
+            SerializedProperty autoFramerate = property.FindPropertyRelative("_autoFramerate");
+            SerializedProperty frameRate = property.FindPropertyRelative("_frameRate");
             rect.height -= 4;
             float rectWid = rect.width;
             float rectX = rect.x;
             rect.height /= _numberOfFields;
-            rect.width = 35;
-            if (GUI.Button(rect, EditorGUIUtility.ObjectContent(null, typeof(Animation)).image))
-            {
-                GUI.FocusControl(name.stringValue + "0");
-            }
-            rect.x = rectX + 35;
+            //rect.width = 35;
+            //if (GUI.Button(rect, EditorGUIUtility.ObjectContent(null, typeof(Animation)).image))
+            //{
+            //    GUI.FocusControl(name.stringValue + "0");
+            //}
+            //rect.x = rectX + 35;
             rect.width = rectWid * 0.25f;
-            GUI.SetNextControlName(name.stringValue + "0");
             EditorGUI.SelectableLabel(rect, name.stringValue);
             rect.x = rectX + rectWid * 0.25f;
             rect.width = rectWid * 0.75f;
             EditorGUI.DelayedTextField(rect, name, new GUIContent("Name"));
             rect.y += rect.height;
-            EditorGUI.DelayedIntField(rect, length, new GUIContent("Number of sprites"));
+            length.intValue = EditorGUI.IntField(rect, new GUIContent("Frame Count"), length.intValue);
             length.intValue = Mathf.Max(length.intValue, 1);
             rect.y += rect.height;
             loop.boolValue = EditorGUI.Toggle(rect, new GUIContent("Loop"), loop.boolValue);
@@ -45,11 +44,11 @@ namespace KevinCastejon.EditorToolbox
             if (autoFramerate.boolValue)
             {
                 EditorGUI.BeginDisabledGroup(true);
-                framerate.intValue = length.intValue;
+                frameRate.intValue = length.intValue;
             }
             rect.y += rect.height;
-            EditorGUI.DelayedIntField(rect, framerate, new GUIContent("Framerate"));
-            framerate.intValue = Mathf.Clamp(framerate.intValue, 0, 999);
+            frameRate.intValue = EditorGUI.IntField(rect, new GUIContent("Frame Rate"), frameRate.intValue);
+            frameRate.intValue = Mathf.Clamp(frameRate.intValue, 0, 999);
             if (autoFramerate.boolValue)
             {
                 EditorGUI.EndDisabledGroup();

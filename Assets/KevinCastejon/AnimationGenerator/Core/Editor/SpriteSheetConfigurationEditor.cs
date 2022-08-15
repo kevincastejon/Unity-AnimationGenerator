@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 
 namespace KevinCastejon.EditorToolbox
@@ -5,17 +6,19 @@ namespace KevinCastejon.EditorToolbox
     [CustomEditor(typeof(SpriteSheetConfiguration))]
     public class SpriteSheetConfigurationEditor : Editor
     {
-        private SpriteSheetConfiguration _config;
+        private SpriteSheetConfiguration _script;
 
         private void OnEnable()
         {
-            _config = target as SpriteSheetConfiguration;
+            _script = target as SpriteSheetConfiguration;
         }
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-            _config.EnsureNotEmpty();
-            _config.EnsureUniqueNames();
+            if (GUILayout.Button("Open the AnimationGenerator window"))
+            {
+                AnimationGenerator window = EditorWindow.GetWindow(typeof(AnimationGenerator)) as AnimationGenerator;
+                window.Config = _script;
+            }
         }
     }
 }

@@ -12,29 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a7a10f3487376438299abc337bc495, type: 3}
   m_Name: DinoSprites
   m_EditorClassIdentifier: 
-  animations:
-  - name: Idle
-    length: 5
-    loop: 1
-    autoFramerate: 1
-    framerate: 5
-  - name: Move
-    length: 5
-    loop: 1
-    autoFramerate: 1
-    framerate: 5
-  - name: Kick
-    length: 4
-    loop: 1
-    autoFramerate: 1
-    framerate: 4
-  - name: Hurt
-    length: 3
-    loop: 1
-    autoFramerate: 1
-    framerate: 3
-  - name: Run
-    length: 4
-    loop: 1
-    autoFramerate: 1
-    framerate: 4
+  _animations:
+  - _name: Idle
+    _length: 4
+    _loop: 0
+    _autoFramerate: 1
+    _frameRate: 4
+  - _name: Walk
+    _length: 6
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 6
+  - _name: Kick
+    _length: 4
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 4
+  - _name: Hurt
+    _length: 3
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 3
+  - _name: Run
+    _length: 7
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 7
