@@ -112,7 +112,12 @@ namespace KevinCastejon.EditorToolbox
             EditorGUI.LabelField(rect, name.stringValue, new GUIStyle(EditorStyles.boldLabel));
             rect.x = rectX + rectWid * 0.25f;
             rect.width = rectWid * 0.75f;
-            name.stringValue = MakeNameUnique(animations, EditorGUI.DelayedTextField(rect, new GUIContent("Name"), name.stringValue), index);
+            EditorGUI.BeginChangeCheck();
+            string newName = EditorGUI.DelayedTextField(rect, new GUIContent("Name"), name.stringValue);
+            if (EditorGUI.EndChangeCheck())
+            {
+                name.stringValue = MakeNameUnique(animations, newName, index);
+            }
             rect.y += rect.height;
             length.intValue = EditorGUI.IntField(rect, new GUIContent("Frame Count"), length.intValue);
             length.intValue = Mathf.Max(length.intValue, 1);
@@ -154,6 +159,11 @@ namespace KevinCastejon.EditorToolbox
                 _spritesheet = Selection.activeObject as Texture2D;
                 _sprites = GetSprites();
             }
+            
+            //
+            // Removed this part that was handling sprite modifications with open window but was drastically slowing the editor
+            //
+
             //if (_spritesheet)
             //{
             //    List<Sprite> refreshedSprites = GetSprites();
@@ -162,6 +172,7 @@ namespace KevinCastejon.EditorToolbox
             //        _sprites = refreshedSprites;
             //    }
             //}
+
             if (_sprites.Contains(null))
             {
                 Close();
@@ -185,6 +196,10 @@ namespace KevinCastejon.EditorToolbox
 
         private void OnGUI()
         {
+            if (_config == null)
+            {
+                Close();
+            }
             if (_srlzConfig == null)
             {
                 _srlzConfig = new SerializedObject(_config);
@@ -210,10 +225,6 @@ namespace KevinCastejon.EditorToolbox
             {
                 InitializeList();
             }
-
-            //EditorGUILayout.Space(10);
-            //EditorGUILayout.LabelField("Generate AnimationClip assets from " + _spritesheet.name + " (" + _sprites.Count + " sprites)", _boldStyle);
-            //EditorGUILayout.Space(10);
 
             _srlzConfig.Update();
             EditorGUI.BeginChangeCheck();
