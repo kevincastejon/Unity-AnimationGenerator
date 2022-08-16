@@ -24,17 +24,22 @@ MonoBehaviour:
     _autoFramerate: 1
     _frameRate: 6
   - _name: Kick
-    _length: 4
-    _loop: 1
-    _autoFramerate: 1
-    _frameRate: 4
-  - _name: Hurt
     _length: 3
     _loop: 1
     _autoFramerate: 1
     _frameRate: 3
-  - _name: Run
-    _length: 7
+  - _name: Hurt
+    _length: 4
     _loop: 1
     _autoFramerate: 1
-    _frameRate: 7
+    _frameRate: 4
+  - _name: Dash
+    _length: 1
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 1
+  - _name: Run
+    _length: 6
+    _loop: 1
+    _autoFramerate: 1
+    _frameRate: 6

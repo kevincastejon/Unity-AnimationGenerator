@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace KevinCastejon.EditorToolbox
+namespace KevinCastejon.AnimationGenerator
 {
     [CustomEditor(typeof(SpriteSheetConfiguration))]
-    public class SpriteSheetConfigurationEditor : Editor
+    internal class SpriteSheetConfigurationEditor : Editor
     {
         private SpriteSheetConfiguration _script;
 

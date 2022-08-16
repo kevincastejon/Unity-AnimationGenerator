@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-namespace KevinCastejon.EditorToolbox
+namespace KevinCastejon.AnimationGenerator
 {
     [Serializable]
-    public class AnimationInfo
+    internal class AnimationDetails
     {
         [SerializeField] private string _name;
         [SerializeField] private int _length;
@@ -12,7 +12,7 @@ namespace KevinCastejon.EditorToolbox
         [SerializeField] private bool _autoFramerate;
         [SerializeField] private int _frameRate;
 
-        public AnimationInfo()
+        internal AnimationDetails()
         {
             _name = "AnimationClipName";
             _length = 1;
@@ -21,10 +21,10 @@ namespace KevinCastejon.EditorToolbox
             _frameRate = 60;
         }
 
-        public string Name { get => _name; }
-        public int Length { get => _length; }
-        public bool Loop { get => _loop; }
-        public bool AutoFramerate { get => _autoFramerate; }
-        public int FrameRate { get => _frameRate; }
+        internal string Name { get => _name; }
+        internal int Length { get => _length; }
+        internal bool Loop { get => _loop; }
+        internal bool AutoFramerate { get => _autoFramerate; }
+        internal int FrameRate { get => _frameRate; }
     }
 }

@@ -5,12 +5,12 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace KevinCastejon.EditorToolbox
+namespace KevinCastejon.AnimationGenerator
 {
     /// <summary>
     /// Generates AnimationClip assets from a Texture2D spritesheet asset and allows to save and load a configuration file
     /// </summary>
-    public class AnimationGeneratorWindow : EditorWindow
+    internal class AnimationGeneratorWindow : EditorWindow
     {
         private SpriteSheetConfiguration _config;
         private SerializedObject _srlzConfig;
@@ -26,7 +26,7 @@ namespace KevinCastejon.EditorToolbox
         private float _currentScrollViewHeight;
         private bool _resize;
         private GUIStyle _horizontalLineStyle;
-        public SpriteSheetConfiguration Config
+        internal SpriteSheetConfiguration Config
         {
             get => _config;
             set
@@ -199,6 +199,7 @@ namespace KevinCastejon.EditorToolbox
             if (_config == null)
             {
                 Close();
+                return;
             }
             if (_srlzConfig == null)
             {
