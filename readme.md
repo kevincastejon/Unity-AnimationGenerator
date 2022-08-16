@@ -19,4 +19,3 @@ Generate **AnimationClip** assets from a **Texture2D** spritesheet asset, save a
 ![Tuto1](https://kevincastejon.github.io/Unity-AnimationGenerator/Assets/KevinCastejon/AnimationGenerator/Documentation/Tuto1.png)
 ![Tuto2](https://kevincastejon.github.io/Unity-AnimationGenerator/Assets/KevinCastejon/AnimationGenerator/Documentation/Tuto2.png)
 ![Tuto3](https://kevincastejon.github.io/Unity-AnimationGenerator/Assets/KevinCastejon/AnimationGenerator/Documentation/Tuto3.png)
-![Tuto4](https://kevincastejon.github.io/Unity-AnimationGenerator/Assets/KevinCastejon/AnimationGenerator/Documentation/Tuto4.png)
