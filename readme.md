@@ -6,7 +6,7 @@ Generate **AnimationClip** assets from a **Texture2D** spritesheet asset, save a
 
 - Create a Animation Spritesheet Configuration asset by using the **Create** menu then selecting **Animation Spritesheet Configuration**.
 - Open it by doucle-clicking the asset or by using the **Open** button into the asset inspector.
-- Select a **Texture2D** spritesheet asset.
+- Select a **Texture2D** spritesheet asset with ordered sprites.
 - Add/remove animations and modify animations names, lengths (number of sprites), framerates, looping parameters.
 - You can preview each animation by selecting it on the list.
 - You can add an ***internal path*** for your sprites (usefull if the **SpriteRenderer** component is on a **GameObject** that is a child of the **GameObject** holding the **Animator** component).
