@@ -10,7 +10,7 @@ namespace KevinCastejon.EditorToolbox
     /// <summary>
     /// Generates AnimationClip assets from a Texture2D spritesheet asset and allows to save and load a configuration file
     /// </summary>
-    public class AnimationGenerator : EditorWindow
+    public class AnimationGeneratorWindow : EditorWindow
     {
         private SpriteSheetConfiguration _config;
         private SerializedObject _srlzConfig;
@@ -85,7 +85,7 @@ namespace KevinCastejon.EditorToolbox
             animations.InsertArrayElementAtIndex(index);
             list.index = index;
             SerializedProperty newAnim = animations.GetArrayElementAtIndex(index);
-            newAnim.FindPropertyRelative("_name").stringValue = "NewAnimation";
+            newAnim.FindPropertyRelative("_name").stringValue = MakeNameUnique(animations, "NewAnimation", index);
             newAnim.FindPropertyRelative("_length").intValue = 1;
             newAnim.FindPropertyRelative("_loop").boolValue = true;
             newAnim.FindPropertyRelative("_autoFramerate").boolValue = true;
@@ -112,7 +112,7 @@ namespace KevinCastejon.EditorToolbox
             EditorGUI.LabelField(rect, name.stringValue, new GUIStyle(EditorStyles.boldLabel));
             rect.x = rectX + rectWid * 0.25f;
             rect.width = rectWid * 0.75f;
-            EditorGUI.DelayedTextField(rect, name, new GUIContent("Name"));
+            name.stringValue = MakeNameUnique(animations, EditorGUI.DelayedTextField(rect, new GUIContent("Name"), name.stringValue), index);
             rect.y += rect.height;
             length.intValue = EditorGUI.IntField(rect, new GUIContent("Frame Count"), length.intValue);
             length.intValue = Mathf.Max(length.intValue, 1);
@@ -241,7 +241,6 @@ namespace KevinCastejon.EditorToolbox
             }
             GUILayout.EndHorizontal();
             ResizeScrollView();
-            //_list.DoLayoutList();
             if (_list.count > 0 && _spritesheet != null)
             {
                 int spriteStartIndex = GetSpriteStartIndexFromAnimationIndex(_list.index, animations);
@@ -273,42 +272,20 @@ namespace KevinCastejon.EditorToolbox
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.EndHorizontal();
             }
+            else
+            {
+                if (_spritesheet == null)
+                {
+                    EditorGUILayout.LabelField("Select a spritesheet to preview animations");
+                }
+                else if (_list.count == 0)
+                {
+                    EditorGUILayout.LabelField("Add animations on the list to preview them");
+                }
+            }
             _srlzConfig.ApplyModifiedProperties();
         }
 
-        private void WriteFile(SerializedProperty animations, int index)
-        {
-            SerializedProperty presetInfo = animations.GetArrayElementAtIndex(index);
-            string filePath = EditorUtility.SaveFilePanelInProject("Choose where to save your AnimationClip assets", presetInfo.FindPropertyRelative("_name").stringValue, "anim", "Save this animation");
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                int spriteCount = 0;
-                for (int i = 0; i < index; i++)
-                {
-                    spriteCount += animations.GetArrayElementAtIndex(i).FindPropertyRelative("_length").intValue;
-                }
-                Sprite[] spr = new Sprite[presetInfo.FindPropertyRelative("_length").intValue];
-                _sprites.CopyTo(spriteCount, spr, 0, presetInfo.FindPropertyRelative("_length").intValue);
-                AnimationClip clip = CreateAnimationClip(spr, presetInfo, _internalPath);
-                AssetDatabase.CreateAsset(clip, filePath);
-            }
-            //filePath = filePath.Substring(filePath.IndexOf("Assets"));
-            //Close();
-            //int spriteCount = 0;
-            //for (int i = 0; i < animations.arraySize; i++)
-            //{
-            //    SerializedProperty presetInfo = animations.GetArrayElementAtIndex(i);
-            //    if (spriteCount + presetInfo.FindPropertyRelative("_length").intValue > _sprites.Count)
-            //    {
-            //        break;
-            //    }
-            //    Sprite[] spr = new Sprite[presetInfo.FindPropertyRelative("_length").intValue];
-            //    _sprites.CopyTo(spriteCount, spr, 0, presetInfo.FindPropertyRelative("_length").intValue);
-            //    AnimationClip clip = CreateAnimationClip(spr, presetInfo, _internalPath);
-            //    AssetDatabase.CreateAsset(clip, filePath + "/" + presetInfo.FindPropertyRelative("_name").stringValue + ".anim");
-            //    spriteCount += presetInfo.FindPropertyRelative("_length").intValue;
-            //}
-        }
 
         private void ResizeScrollView()
         {
@@ -369,34 +346,22 @@ namespace KevinCastejon.EditorToolbox
             return spriteIndex;
         }
 
-        private int GetAnimationIndexByString(string name, SerializedProperty animations)
+        private void WriteFile(SerializedProperty animations, int index)
         {
-            for (int i = 0; i < animations.arraySize; i++)
+            SerializedProperty animInfo = animations.GetArrayElementAtIndex(index);
+            string filePath = EditorUtility.SaveFilePanelInProject("Choose where to save your AnimationClip assets", animInfo.FindPropertyRelative("_name").stringValue, "anim", "Save this animation");
+            if (!string.IsNullOrEmpty(filePath))
             {
-                if (animations.GetArrayElementAtIndex(i).FindPropertyRelative("_name").stringValue == name)
+                int spriteCount = 0;
+                for (int i = 0; i < index; i++)
                 {
-                    return i;
+                    spriteCount += animations.GetArrayElementAtIndex(i).FindPropertyRelative("_length").intValue;
                 }
+                Sprite[] spr = new Sprite[animInfo.FindPropertyRelative("_length").intValue];
+                _sprites.CopyTo(spriteCount, spr, 0, animInfo.FindPropertyRelative("_length").intValue);
+                AnimationClip clip = CreateAnimationClip(spr, animInfo, _internalPath);
+                AssetDatabase.CreateAsset(clip, filePath);
             }
-            return -1;
-        }
-
-        private string[] GetNamesArray(SerializedProperty animations)
-        {
-            string[] names = new string[animations.arraySize];
-            for (int i = 0; i < animations.arraySize; i++)
-            {
-                names[i] = animations.GetArrayElementAtIndex(i).FindPropertyRelative("_name").stringValue;
-            }
-            return names;
-        }
-
-        private void HorizontalLine(Color color)
-        {
-            var c = GUI.color;
-            GUI.color = color;
-            GUILayout.Box(GUIContent.none, _horizontalLineStyle);
-            GUI.color = c;
         }
 
         private void WriteFiles(SerializedProperty animations)
@@ -413,26 +378,26 @@ namespace KevinCastejon.EditorToolbox
             int spriteCount = 0;
             for (int i = 0; i < animations.arraySize; i++)
             {
-                SerializedProperty presetInfo = animations.GetArrayElementAtIndex(i);
-                if (spriteCount + presetInfo.FindPropertyRelative("_length").intValue > _sprites.Count)
+                SerializedProperty animInfo = animations.GetArrayElementAtIndex(i);
+                if (spriteCount + animInfo.FindPropertyRelative("_length").intValue > _sprites.Count)
                 {
                     break;
                 }
-                Sprite[] spr = new Sprite[presetInfo.FindPropertyRelative("_length").intValue];
-                _sprites.CopyTo(spriteCount, spr, 0, presetInfo.FindPropertyRelative("_length").intValue);
-                AnimationClip clip = CreateAnimationClip(spr, presetInfo, _internalPath);
-                AssetDatabase.CreateAsset(clip, folderPath + "/" + presetInfo.FindPropertyRelative("_name").stringValue + ".anim");
-                spriteCount += presetInfo.FindPropertyRelative("_length").intValue;
+                Sprite[] spr = new Sprite[animInfo.FindPropertyRelative("_length").intValue];
+                _sprites.CopyTo(spriteCount, spr, 0, animInfo.FindPropertyRelative("_length").intValue);
+                AnimationClip clip = CreateAnimationClip(spr, animInfo, _internalPath);
+                AssetDatabase.CreateAsset(clip, folderPath + "/" + animInfo.FindPropertyRelative("_name").stringValue + ".anim");
+                spriteCount += animInfo.FindPropertyRelative("_length").intValue;
             }
         }
 
-        private static AnimationClip CreateAnimationClip(Sprite[] sprites, SerializedProperty presetInfo, string path)
+        private static AnimationClip CreateAnimationClip(Sprite[] sprites, SerializedProperty animInfo, string path)
         {
             AnimationClip clip = new AnimationClip();
-            clip.frameRate = presetInfo.FindPropertyRelative("_frameRate").intValue;
+            clip.frameRate = animInfo.FindPropertyRelative("_frameRate").intValue;
 
-            ObjectReferenceKeyframe[] keys = new ObjectReferenceKeyframe[presetInfo.FindPropertyRelative("_length").intValue];
-            for (int i = 0; i < presetInfo.FindPropertyRelative("_length").intValue; i++)
+            ObjectReferenceKeyframe[] keys = new ObjectReferenceKeyframe[animInfo.FindPropertyRelative("_length").intValue];
+            for (int i = 0; i < animInfo.FindPropertyRelative("_length").intValue; i++)
             {
                 keys[i] = new ObjectReferenceKeyframe
                 {
@@ -447,12 +412,36 @@ namespace KevinCastejon.EditorToolbox
             AnimationUtility.SetObjectReferenceCurve(clip, curveBinding, keys);
             AnimationClipSettings clipSetting = new AnimationClipSettings
             {
-                loopTime = presetInfo.FindPropertyRelative("_loop").boolValue,
+                loopTime = animInfo.FindPropertyRelative("_loop").boolValue,
                 stopTime = 1f
             };
             AnimationUtility.SetAnimationClipSettings(clip, clipSetting);
             return clip;
         }
+        private string MakeNameUnique(SerializedProperty animations, string newName, int newAnimIndex)
+        {
+            while (!IsNameUnique(animations, newName, newAnimIndex))
+            {
+                newName += "_";
+            }
+            return newName;
+        }
 
+        private bool IsNameUnique(SerializedProperty animations, string newName, int newAnimIndex)
+        {
+            for (int i = 0; i < animations.arraySize; i++)
+            {
+                if (newAnimIndex == i)
+                {
+                    continue;
+                }
+                SerializedProperty animInfo = animations.GetArrayElementAtIndex(i);
+                if (animInfo.FindPropertyRelative("_name").stringValue == newName)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace KevinCastejon.EditorToolbox
         [OnOpenAsset]
         private static bool OpenSpriteSheet(int instanceID, int line)
         {
-            AnimationGenerator window = EditorWindow.GetWindow(typeof(AnimationGenerator)) as AnimationGenerator;
+            AnimationGeneratorWindow window = EditorWindow.GetWindow(typeof(AnimationGeneratorWindow)) as AnimationGeneratorWindow;
             window.Config = (SpriteSheetConfiguration)EditorUtility.InstanceIDToObject(instanceID);
             return true;
         }

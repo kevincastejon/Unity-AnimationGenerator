@@ -16,7 +16,7 @@ namespace KevinCastejon.EditorToolbox
         {
             if (GUILayout.Button("Open the AnimationGenerator window"))
             {
-                AnimationGenerator window = EditorWindow.GetWindow(typeof(AnimationGenerator)) as AnimationGenerator;
+                AnimationGeneratorWindow window = EditorWindow.GetWindow(typeof(AnimationGeneratorWindow)) as AnimationGeneratorWindow;
                 window.Config = _script;
             }
         }
