@@ -386,7 +386,6 @@ namespace KevinCastejon.AnimationGenerator
                 return;
             }
             folderPath = folderPath.Substring(folderPath.IndexOf("Assets"));
-            Close();
             int spriteCount = 0;
             for (int i = 0; i < animations.arraySize; i++)
             {
