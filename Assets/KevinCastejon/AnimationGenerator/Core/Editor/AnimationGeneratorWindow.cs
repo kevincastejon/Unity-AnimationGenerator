@@ -159,7 +159,7 @@ namespace KevinCastejon.AnimationGenerator
                 _spritesheet = Selection.activeObject as Texture2D;
                 _sprites = GetSprites();
             }
-            
+
             //
             // Removed this part that was handling sprite modifications with open window but was drastically slowing the editor
             //
@@ -189,9 +189,9 @@ namespace KevinCastejon.AnimationGenerator
                     int spriteEndIndex = spriteStartIndex + length.intValue - 1;
                     _nextFrameTime = (float)EditorApplication.timeSinceStartup + duration;
                     _spriteIndexPreview = _spriteIndexPreview + 1 > spriteEndIndex ? spriteStartIndex : _spriteIndexPreview + 1;
+                    Repaint();
                 }
             }
-            Repaint();
         }
 
         private void OnGUI()
