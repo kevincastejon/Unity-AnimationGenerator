@@ -257,6 +257,7 @@ namespace KevinCastejon.AnimationGenerator
             {
                 int spriteStartIndex = GetSpriteStartIndexFromAnimationIndex(_list.index, animations);
                 int spriteEndIndex = spriteStartIndex + animations.GetArrayElementAtIndex(_list.index).FindPropertyRelative("_length").intValue - 1;
+                bool canGenerateOne = true;
                 if (spriteEndIndex < _sprites.Count)
                 {
                     Rect editorRect = EditorGUILayout.GetControlRect(false, position.height - (_currentScrollViewHeight + 35f) - 35f);
@@ -266,9 +267,14 @@ namespace KevinCastejon.AnimationGenerator
                 else
                 {
                     GUILayout.Label("The selected animation exceed the spritesheet sprites count");
+                    canGenerateOne = false;
                 }
-                bool canGenerateAll = animations.GetArrayElementAtIndex(animations.arraySize - 1).FindPropertyRelative("_length").intValue < _sprites.Count;
-                bool canGenerateOne = animations.GetArrayElementAtIndex(_list.index).FindPropertyRelative("_length").intValue < _sprites.Count;
+                int totalLength = 0;
+                for (int i = 0; i < animations.arraySize; i++)
+                {
+                    totalLength += animations.GetArrayElementAtIndex(i).FindPropertyRelative("_length").intValue;
+                }
+                bool canGenerateAll = totalLength <= _sprites.Count;
                 EditorGUILayout.BeginHorizontal();
                 EditorGUI.BeginDisabledGroup(!canGenerateAll);
                 if (GUILayout.Button(new GUIContent("Generate all animations", canGenerateAll ? "Generate all animations on the list" : "Some animations on the list exceed the spritesheet sprites count.")))
