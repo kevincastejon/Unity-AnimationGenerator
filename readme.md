@@ -2,6 +2,8 @@
 
 Generate **AnimationClip** assets from a **Texture2D** spritesheet asset, save and reuse the sprites mapping configuration with other similar spritesheets.
 
+[Get it on the AssetStore](https://assetstore.unity.com/packages/tools/animation/animation-generator-229840)
+
 [Get the Unity package](https://github.com/kevincastejon/Unity-AnimationGenerator/releases/tag/v1.0)
 
 ## How to use
